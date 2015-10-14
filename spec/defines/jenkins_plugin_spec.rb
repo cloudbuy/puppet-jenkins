@@ -6,7 +6,7 @@ describe 'jenkins::plugin' do
 
   describe 'without version' do
     it do
-      should contain_archive__download('myplug.hpi').with(
+      should contain_archive('/var/lib/jenkins/plugins/myplug.hpi').with(
         :url  =>  'https://updates.jenkins-ci.org/latest/myplug.hpi',
         :user => 'jenkins',
       )
@@ -18,7 +18,7 @@ describe 'jenkins::plugin' do
     let(:params) { { :version => '1.2.3' } }
 
     it do
-      should contain_archive__download('myplug.hpi').with(
+      should contain_archive('/var/lib/jenkins/plugins/myplug.hpi').with(
         :url  =>  'https://updates.jenkins-ci.org/download/plugins/myplug/1.2.3/myplug.hpi',
         :user => 'jenkins',
       )
@@ -30,7 +30,7 @@ describe 'jenkins::plugin' do
     let(:params) { { :version => '1.2.3' } }
     before { facts[:jenkins_plugins] = 'myplug 1.2.3, fooplug 1.4.5' }
 
-    it { should_not contain_archive__download('myplug.hpi') }
+    it { should_not contain_archive('/var/lib/jenkins/plugins/myplug.hpi') }
     it { should_not contain_file('/var/lib/jenkins/plugins/myplug.hpi')}
   end
 
@@ -38,14 +38,14 @@ describe 'jenkins::plugin' do
     let(:params) { { :version => '1.2.3' } }
     before { facts[:jenkins_plugins] = 'fooplug 1.4.5, myplug 1.2.3' }
 
-    it { should_not contain_archive__download('myplug.hpi') }
+    it { should_not contain_archive_('/var/lib/jenkins/plugins/myplug.hpi') }
     it { should_not contain_file('/var/lib/jenkins/plugins/myplug.hpi')}
   end
 
   describe 'with enabled is false' do
     let(:params) { { :enabled => false } }
 
-    it { should contain_archive__download('myplug.hpi') }
+    it { should contain_archive('/var/lib/jenkins/plugins/myplug.hpi') }
     it { should contain_file('/var/lib/jenkins/plugins/myplug.hpi')}
     it { should contain_file('/var/lib/jenkins/plugins/myplug.hpi.disabled').with({
       :ensure => 'present',
@@ -57,7 +57,7 @@ describe 'jenkins::plugin' do
   describe 'with enabled is true' do
     let(:params) { { :enabled => true } }
 
-    it { should contain_archive__download('myplug.hpi') }
+    it { should contain_archive('/var/lib/jenkins/plugins/myplug.hpi') }
     it { should contain_file('/var/lib/jenkins/plugins/myplug.hpi')}
     it { should contain_file('/var/lib/jenkins/plugins/myplug.hpi.disabled').with({
       :ensure => 'absent',

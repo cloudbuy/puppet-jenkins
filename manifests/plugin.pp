@@ -104,31 +104,26 @@ define jenkins::plugin(
     file { "${::jenkins::plugin_dir}/${plugin}.pinned":
       owner   => $::jenkins::user,
       group   => $::jenkins::group,
-      require => Archive::Download[$plugin],
+      require => Archive["${plugin_dir}/${plugin}"],
     }
 
     if $digest_string == '' {
-      $checksum = false
+      $checksum = undef
     } else {
-      $checksum = true
+      $checksum = $digest_string
     }
 
-    archive::download { $plugin:
-      url              => $download_url,
-      src_target       => $::jenkins::plugin_dir,
-      allow_insecure   => true,
-      follow_redirects => true,
+    archive { "${plugin_dir}/${plugin}":
+      source           => $download_url,
       checksum         => $checksum,
-      digest_string    => $digest_string,
-      digest_type      => $digest_type,
+      checksum_type    => $digest_type,
       user             => $::jenkins::user,
-      proxy_server     => $proxy_server,
       notify           => Service['jenkins'],
       require          => File[$::jenkins::plugin_dir],
     }
 
     file { "${::jenkins::plugin_dir}/${plugin}" :
-      require => Archive::Download[$plugin],
+      require => Archive["${plugin_dir}/${plugin}"],
       owner   => $::jenkins::user,
       group   => $::jenkins::group,
       mode    => '0644',
