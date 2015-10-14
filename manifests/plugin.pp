@@ -104,7 +104,7 @@ define jenkins::plugin(
     file { "${::jenkins::plugin_dir}/${plugin}.pinned":
       owner   => $::jenkins::user,
       group   => $::jenkins::group,
-      require => Archive["${plugin_dir}/${plugin}"],
+      require => Archive["${::jenkins::plugin_dir}/${plugin}"],
     }
 
     if $digest_string == '' {
@@ -113,7 +113,7 @@ define jenkins::plugin(
       $checksum = $digest_string
     }
 
-    archive { "${plugin_dir}/${plugin}":
+    archive { "${::jenkins::plugin_dir}/${plugin}":
       source           => $download_url,
       checksum         => $checksum,
       checksum_type    => $digest_type,
@@ -123,7 +123,7 @@ define jenkins::plugin(
     }
 
     file { "${::jenkins::plugin_dir}/${plugin}" :
-      require => Archive["${plugin_dir}/${plugin}"],
+      require => Archive["${::jenkins::plugin_dir}/${plugin}"],
       owner   => $::jenkins::user,
       group   => $::jenkins::group,
       mode    => '0644',
