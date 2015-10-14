@@ -109,14 +109,16 @@ define jenkins::plugin(
 
     if $digest_string == '' {
       $checksum = undef
+      $checksum_type = undef
     } else {
       $checksum = $digest_string
+      $checksum_type = $digest_type
     }
 
     archive { "${::jenkins::plugin_dir}/${plugin}":
       source           => $download_url,
       checksum         => $checksum,
-      checksum_type    => $digest_type,
+      checksum_type    => $checksum_type,
       user             => $::jenkins::user,
       notify           => Service['jenkins'],
       require          => File[$::jenkins::plugin_dir],
