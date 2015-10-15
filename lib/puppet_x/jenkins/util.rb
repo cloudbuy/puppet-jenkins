@@ -2,7 +2,7 @@ require 'puppet_x/jenkins'
 
 module PuppetX::Jenkins::Util
   def unundef(data)
-    iterate(data) { |x| x == :undef ? nil : x }
+    iterate(data) { |x| (x == :undef || x == 'undef') ? nil : x }
   end
   module_function :unundef
 
