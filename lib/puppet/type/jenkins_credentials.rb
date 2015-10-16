@@ -53,7 +53,7 @@ PuppetX::Jenkins::Type::Cli.newtype(:jenkins_credentials) do
   newproperty(:private_key_type) do
     desc 'ssh private key type - string or file'
     defaultto :string
-    newavlues(:string, :file)
+    newvalues(:string, :file)
   end
 
   newproperty(:passphrase) do
