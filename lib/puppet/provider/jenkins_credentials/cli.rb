@@ -51,7 +51,7 @@ Puppet::Type.type(:jenkins_credentials).provide(:cli, :parent => PuppetX::Jenkin
     when 'UsernamePasswordCredentialsImpl'
       [:description, :username, :password].each {|k| copy_key(params, info, k)}
     when 'BasicSSHUserPrivateKey'
-      [:description, :username, :private_key, :private_key_type, :passphrase].each {|k| copy_key(params, info, k)}
+      [:description, :username, :private_key, :passphrase].each {|k| copy_key(params, info, k)}
     when 'StringCredentialsImpl'
       [:description, :secret].each {|k| copy_key(params, info, k)}
     when 'FileCredentialsImpl'

@@ -50,12 +50,6 @@ PuppetX::Jenkins::Type::Cli.newtype(:jenkins_credentials) do
     desc 'ssh private key - BasicSSHUserPrivateKey'
   end
 
-  newproperty(:private_key_type) do
-    desc 'ssh private key type - string or file'
-    defaultto :string
-    newvalues(:string, :file)
-  end
-
   newproperty(:passphrase) do
     desc 'passphrase to unlock ssh private key - BasicSSHUserPrivateKey'
   end

@@ -542,14 +542,10 @@ class Actions {
         break
       case 'BasicSSHUserPrivateKey':
         def key = null
-        if conf['private_key_type'] == 'string' {
-          def key = new BasicSSHUserPrivateKey.DirectEntryPrivateKeySource(
-            conf['private_key']
-          )
-        } else if (conf['private_key_type'] == 'file') {
-          def key = new BasicSSHUserPrivateKey.FileOnMasterPrivateKeySource(
-            conf['private_key']
-          )
+        if (conf['private_key'].startsWith('-----BEGIN')) {
+          key = new BasicSSHUserPrivateKey.DirectEntryPrivateKeySource(conf['private_key'])
+        } else {
+          key = new BasicSSHUserPrivateKey.FileOnMasterPrivateKeySource(conf['private_key'])
         }
         cred = new BasicSSHUserPrivateKey(
           // CredentialsScope is an enum
