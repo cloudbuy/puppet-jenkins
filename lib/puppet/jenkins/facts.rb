@@ -28,7 +28,6 @@ module Puppet
             return nil unless File.directory? jobs_dir
 
             Dir.glob(File.join(jobs_dir, '*', 'config.xml')).map { |j| File.basename(File.dirname j) }
-            end
           end
         end
         return nil
