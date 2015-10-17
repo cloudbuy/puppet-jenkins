@@ -18,6 +18,19 @@ module Puppet
             Puppet::Jenkins::Facts.plugins_str
           end
         end
+
+        Facter.add(:jenkins_jobs) do
+          confine :kernel => "Linux"
+          setcode do
+            home = Puppet::Jenkins.home_dir
+            return nil if home.nil?
+            jobs_dir = File.join(home, 'jobs')
+            return nil unless File.directory? jobs_dir
+
+            Dir.glob(File.join(jobs_dir, '*')).select { |e| File.directory? e }
+            end
+          end
+        end
         return nil
       end
 
