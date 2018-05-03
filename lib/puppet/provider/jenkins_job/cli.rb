@@ -83,14 +83,14 @@ Puppet::Type.type(:jenkins_job).provide(:cli, parent: Puppet::X::Jenkins::Provid
   private_class_method :job_enabled
 
   def create_job
-    cli(['create-job', name], stdin: config)
+    cli(['create-job', "'#{name}'"], stdin: config)
   end
 
   def update_job
-    cli(['update-job', name], stdin: config)
+    cli(['update-job', "'#{name}'"], stdin: config)
   end
 
   def delete_job
-    cli(['delete-job', name])
+    cli(['delete-job', "'#{name}'"])
   end
 end
