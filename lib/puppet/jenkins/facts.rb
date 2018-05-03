@@ -18,6 +18,19 @@ module Puppet
             Puppet::Jenkins::Facts.plugins_str
           end
         end
+
+        Facter.add(:jenkins_jobs) do
+          confine :kernel => "Linux"
+          setcode do
+            if Puppet::Jenkins.home_dir
+              jobs_dir = File.join(Puppet::Jenkins.home_dir, 'jobs')
+              if File.directory? jobs_dir
+                Dir.glob(File.join(jobs_dir, '*', 'config.xml')).map { |j| File.basename(File.dirname j) }
+              end
+            end
+          end
+        end
+
         nil
       end
 
